@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rbuildignore
+.rds
+.hdr
+.tfw
+.tif
+readme.txt
+R/dev.R
