@@ -6,7 +6,9 @@
 # VIF_select - do VIF selection of predictiors (only works now for cross_validate = TRUE)
 # cross_validate - assess models on cross validated or hind casted dataset
 
-#' Title
+#' Format data
+#'
+#' Prepares data for modeling. Gives list with training and evaluation data needed for the model.
 #'
 #' @param explanatory_variables Raster data, output from get_rasters()
 #' @param response_variable Data for fitting, output from load_PA()
@@ -19,11 +21,11 @@
 #' @export
 #'
 #' @examples None.
-#' @import raster
+#' @importFrom raster extract
 #' @importFrom tidyr drop_na
-#' @import stringr
-#' @import dummies
-#' @import caret
+#' @importFrom stringr str_detect
+#' @importFrom dummies dummy.data.frame
+#' @importFrom caret createDataPartition
 format_data <- function(explanatory_variables, response_variable, evaluation_data,
                         VIF_select = FALSE, cross_validate = FALSE, threshold = 10)
 {
@@ -64,7 +66,7 @@ format_data <- function(explanatory_variables, response_variable, evaluation_dat
   {
     print("CV")
 
-    region_data_partition <- createDataPartition(region_data_formatted$PA, p = 0.66, list = FALSE)
+    region_data_partition <- caret::createDataPartition(region_data_formatted$PA, p = 0.66, list = FALSE)
 
     # Subset data for training and testing
     region_train_data <- region_data_formatted[region_data_partition,]

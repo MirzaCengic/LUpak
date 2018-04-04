@@ -17,8 +17,8 @@
 #' @examples None so far
 #' @import Rahat
 #' @import stringr
-#' @import dplyr
-#' @import sf
+#' @importFrom dplyr transmute mutate select bind_rows
+#' @importFrom sf st_as_sf
 load_PA <- function(region, category, type, path)
 {
 
@@ -52,7 +52,7 @@ load_PA <- function(region, category, type, path)
       PA = rep(1, nrow(.)))
 
   # Load data for model evaluation ####
-  region_PAs <- bind_rows(region_pres, region_abs)
+  region_PAs <- dplyr::bind_rows(region_pres, region_abs)
   # Convert to sf
   region_PAs_sf <- sf::st_as_sf(region_PAs, coords = c("x", "y"), crs = 4326)
   # Extract values from raster ####

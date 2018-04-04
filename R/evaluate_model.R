@@ -17,10 +17,9 @@
 #' @export
 #'
 #' @examples None.
-#' @import dplyr
-#' @import tidyr
+#' @importFrom dplyr transmute select
 #' @importFrom PresenceAbsence optimal.thresholds
-#' @importFrom tidyr drop_na
+#' @importFrom tidyr drop_na spread
 #' @importFrom dismo evaluate
 evaluate_model <- function(fitted_model, data)
 {
@@ -87,10 +86,10 @@ evaluate_model <- function(fitted_model, data)
 #'
 #' @examples None.
 #'
-#' @import tibble
-#' @import dplyr
-#' @import readr
-#' @import tidy
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr transmute mutate
+#' @importFrom readr write_csv
+#' @importFrom broom tidy
 get_evaluations <- function(fitted_model, data, ID, output_folder)
 {
 

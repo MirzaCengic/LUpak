@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples None
-#' @import raster
+#' @importFrom raster layerize dropLayer stack
 #'
  categorize_rasters <- function(raster_data, data)
 {

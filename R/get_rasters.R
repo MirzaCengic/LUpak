@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @import Rahat
-#' @import raster
+#' @importFrom raster stack
 #'
 #' @examples get_rasters("Korea_region")
 

@@ -89,7 +89,7 @@ vif_stepwise <- function(in_frame, thresh = 10, trace = FALSE, ...){
 #' @export
 #'
 #' @examples None.
-#' @import raster
+#' @importFrom raster sampleRandom subset
 
 vif_select_vars <- function(input_rasters, points_number = 10000, thresh)
 {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_data.R
 \name{format_data}
 \alias{format_data}
-\title{Title}
+\title{Format data}
 \usage{
 format_data(explanatory_variables, response_variable, evaluation_data,
   VIF_select = FALSE, cross_validate = FALSE, threshold = 10)
@@ -24,7 +24,7 @@ format_data(explanatory_variables, response_variable, evaluation_data,
 List of 2. Training data and evaluation data.
 }
 \description{
-Title
+Prepares data for modeling. Gives list with training and evaluation data needed for the model.
 }
 \examples{
 None.
