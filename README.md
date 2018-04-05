@@ -15,7 +15,10 @@ devtools::install_github("mirzacengic/LUpak")
 
 *Made for personal use only!*
 
-#### Functions currenly added (without particular order):
+Functions currenly added (without particular order):
+----------------------------------------------------
+
+#### For modeling:
 
 -   `variable_importance()` - calculate importance of predictor variables.
 
@@ -32,3 +35,7 @@ devtools::install_github("mirzacengic/LUpak")
 -   `fit_model()` - Fit linear model to the data.
 
 -   `categorize_rasters()` - Create dummy variable rasters for categorical raster variables. Wraps around `raster::layerize()`. **Needs major overhaul!**
+
+#### For data preparation:
+
+-   `get_change_raster()` - Get differences between two rasters. **Optimized version!** Might have potential to be generalized for other people to use.
