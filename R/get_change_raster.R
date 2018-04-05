@@ -28,7 +28,7 @@
 
 
 
-get_change_raster <- function(raster_input, filename, category, return_raster = TRUE)
+get_change_raster <- function(input_raster, filename, category, return_raster = TRUE)
 {
   if (missing(filename))
   {
@@ -36,28 +36,28 @@ get_change_raster <- function(raster_input, filename, category, return_raster = 
      warning("Argument filename is missing. Temporary raster file will be created.")
   }
 
-  if (nlayers(raster_input) > 2)
+  if (raster::nlayers(input_raster) > 2)
   {
     stop("There are more than 2 timesteps in the input raster. Pass data with only t1 and t2 component.")
   }
 
   # change input into raster brick
-  if (inherits(raster_input, "RasterStack"))
+  if (inherits(input_raster, "RasterStack"))
   {
     # message("Input RasterStack will be converted to RasterBrick")
-    raster_input <- brick(raster_input)
+    input_raster <- raster::brick(input_raster)
   }
 
-  if (!inherits(raster_input, "RasterBrick"))
+  if (!inherits(input_raster, "RasterBrick"))
   {
     stop("Input has to be RasterBrick or RasterStack")
   }
 
-  raster_to_write <- writeStart(raster::subset(raster_input, 1), filename, format = "GTiff", overwrite = TRUE)
-  block_size <- blockSize(raster_input)
+  raster_to_write <- raster::writeStart(raster::subset(input_raster, 1), filename, format = "GTiff", overwrite = TRUE)
+  block_size <- raster::blockSize(input_raster)
 
   for (i in 1:block_size$n) {
-    vals <- getValuesBlock(raster_input, row = block_size$row[i], nrows = block_size$nrows[i])
+    vals <- raster::getValuesBlock(input_raster, row = block_size$row[i], nrows = block_size$nrows[i])
     # Check which values aren't crops
 
     # Exclude values from category var
@@ -74,14 +74,14 @@ get_change_raster <- function(raster_input, filename, category, return_raster = 
     is_change[vals[, 1] == vals[, 2]] <- 0
 
     # Assign values
-    raster_to_write <- writeValues(raster_to_write, v = is_change, block_size$row[i])
+    raster_to_write <- raster::writeValues(raster_to_write, v = is_change, block_size$row[i])
   }
-  raster_to_write <- writeStop(raster_to_write)
+  raster_to_write <- raster::writeStop(raster_to_write)
 
   if (isTRUE(return_raster))
   {
 
-    change_raster <- raster(filename)
+    change_raster <- raster::raster(filename)
     return(change_raster)
   }
 }

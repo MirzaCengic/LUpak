@@ -4,17 +4,17 @@
 \alias{get_change_raster}
 \title{Get difference between two rasters}
 \usage{
-get_change_raster(raster_input, filename, category, return_raster = TRUE)
+get_change_raster(input_raster, filename, category, return_raster = TRUE)
 }
 \arguments{
-\item{raster_input}{RasterStack or RasterBrick of t1 and t2 timestep.}
-
 \item{filename}{Output file. Full path with .tif extension. If missing, temporary file will be created (file sizes may get large).}
 
 \item{category}{Land cover category to extract.}
 
 \item{return_raster}{Logical. The function stores the raster in the \code{filename} argument path as a side-effect.
 If \code{return_raster = TRUE} (default), then the function returns the stored raster.}
+
+\item{raster_input}{RasterStack or RasterBrick of t1 and t2 timestep.}
 }
 \value{
 Binary raster with 1 values as changes. Only if \code{return_raster = TRUE}. Otherwise, the function side-effect is to save the file locally.
