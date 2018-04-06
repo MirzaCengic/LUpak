@@ -40,4 +40,6 @@ Functions currenly added (without particular order):
 
 -   `get_change_raster()` - Get differences between two rasters. **Optimized version!** Might have potential to be generalized for other people to use.
 
+-   `get_change_raster_GDAL()` - alternative with GDAL and parallel implementation.
+
 -   `rarify_points()` - Rarify points according to the raster grid. **Optimized version!**
