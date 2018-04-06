@@ -116,7 +116,7 @@ get_change_raster_GDAL <- function(x, y, size, outpath, outfile, category, numbe
 
   if (file.exists(outfile))
   {
-    fs::dir_delete(out_folder_path)
+    fs::dir_delete(outpath)
   } else {
     stop("Error: output file has not been created.")
   }
