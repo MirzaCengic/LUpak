@@ -5,25 +5,23 @@
 \title{Extract changed cells from two rasters
 Get changes from two rasters from different periods. The function is suitable for parallel processing of very large rasters on computers with many cores.}
 \usage{
-get_change_raster_GDAL(x, y, size, outpath, outfile, values_of_interest,
-  spatial = FALSE, number_of_cores = 2)
+get_change_raster_GDAL(x, y, size, outpath, outfile, category,
+  number_of_cores = 1)
 }
 \arguments{
 \item{x}{t1 raster}
 
 \item{y}{t2 raster}
 
-\item{size}{tilesize}
+\item{size}{Tilesize. If blank, tile size will be \code{1000 * cell resolution}.}
 
-\item{outpath}{Folder in which the temporary raster files will be created. If keep_temp argument is set to FALSE (default), files will be deleted after the process is sucessfully executed. Default path is R temporary directory (see tempdir()).}
+\item{outpath}{Folder in which the temporary raster files will be created. Temporary files will be deleted when outfile is created.}
 
 \item{outfile}{Output file name. Optional.}
 
-\item{spatial}{Logical. When TRUE function returns SpatialPointsDataFrame. Default is FALSE.}
+\item{category}{Land cover category to extract.}
 
 \item{number_of_cores}{Number of cores to run. Default is 1.}
-
-\item{category}{Land cover category to extract.}
 }
 \value{
 None.
