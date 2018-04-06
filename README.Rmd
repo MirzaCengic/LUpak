@@ -43,6 +43,8 @@ devtools::install_github("mirzacengic/LUpak")
 - `categorize_rasters()` - Create dummy variable rasters for categorical raster variables. Wraps around `raster::layerize()`. **Needs major overhaul!**
 
 #### For data preparation:  
-- `get_change_raster()` - Get differences between two rasters. **Optimized version!** Might have potential to be generalized for other people to use.
+- `get_change_raster()` - Get differences between two rasters. **Optimized version!** Might have potential to be generalized for other people to use.  
+
+- `rarify_points()` - Rarify points according to the raster grid. **Optimized version!**
 
 

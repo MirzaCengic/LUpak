@@ -39,3 +39,5 @@ Functions currenly added (without particular order):
 #### For data preparation:
 
 -   `get_change_raster()` - Get differences between two rasters. **Optimized version!** Might have potential to be generalized for other people to use.
+
+-   `rarify_points()` - Rarify points according to the raster grid. **Optimized version!**
