@@ -22,7 +22,8 @@
 #' @importFrom raster raster getValues setValues
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom doParallel registerDoParallel
-#' @importFrom foreach foreach
+#' @importFrom foreach foreach %dopar%
+#' @importFrom gdalR GDAL_mosaic_tile
 #'
 get_change_raster_GDAL <- function(x, y, size, outpath, outfile, values_of_interest, spatial = FALSE, number_of_cores = 2)
 {
@@ -114,7 +115,7 @@ get_change_raster_GDAL <- function(x, y, size, outpath, outfile, values_of_inter
 
 
   # Check the bigtiff argument in gdal function
-  x_rcl <- GDAL_mosaic_tiles(outfile, folder_path = out_folder_path, large_tif = TRUE, return_raster = TRUE)
+  x_rcl <- gdalR::GDAL_mosaic_tile(outfile, folder_path = out_folder_path, large_tif = TRUE, return_raster = TRUE)
 
   return(x_rcl)
 
