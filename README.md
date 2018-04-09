@@ -43,3 +43,5 @@ Functions currenly added (without particular order):
 -   `get_change_raster_GDAL()` - alternative with GDAL and parallel implementation.
 
 -   `rarify_points()` - Rarify points according to the raster grid. **Optimized version!**
+
+-   `get_absences()` - Create absences for agricultural modeling.
