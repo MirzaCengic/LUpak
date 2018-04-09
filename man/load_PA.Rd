@@ -13,7 +13,7 @@ load_PA(region, category, type, path)
 
 \item{type}{Hind-casted or cross-validated type of data. One of \code{c("Fit", "Eval")}}
 
-\item{path}{Folder path}
+\item{path}{Folder path in which to search for the presence/absence data. Usually located in "./LU_data/Changes_*/".}
 }
 \value{
 Dataframe

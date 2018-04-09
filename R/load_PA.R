@@ -9,24 +9,21 @@
 #' @param region Which region.
 #' @param category Which category.
 #' @param type Hind-casted or cross-validated type of data. One of \code{c("Fit", "Eval")}
-#' @param path Folder path
+#' @param path Folder path in which to search for the presence/absence data. Usually located in "./LU_data/Changes_*/".
 #'
 #' @return Dataframe
 #' @export
 #'
 #' @examples None so far
 #' @import Rahat
-#' @import stringr
+#' @importFrom stringr str_subset
 #' @importFrom dplyr transmute mutate select bind_rows
 #' @importFrom sf st_as_sf
 load_PA <- function(region, category, type, path)
 {
 
-  stopifnot(type %in% c("Fit", "Eval"))
-  if(missing(path))
-  {
-    path <- "LU_data/Changes/"
-  }
+  stopifnot(type %in% c("Fit", "Eval"), !missing(path))
+
   # Get path for change data - str_subset controls the region, list.files the category
   region_files <- path %>%
     paste0(type) %>%
@@ -92,41 +89,41 @@ load_PA <- function(region, category, type, path)
 #' @import dplyr
 #' @import sf
 
-load_PA2 <- function(region, category, type)
-{
-  # Presence data
-  region_pres <- "LU_data/Changes_four_categ/" %>%
-    paste0(type) %>%
-    Rahat::milkunize("m5") %>%
-    list.dirs(recursive = TRUE, full.names = TRUE) %>%
-    stringr::str_subset(paste0(region, "$")) %>%
-    list.files(pattern = category, full.names = TRUE) %>%
-    str_subset("Presences") %>%
-    read.csv() %>%
-    dplyr::transmute(x = X,
-                     y = Y,
-                     PA = rep(1, nrow(.)))
-
-  # Absence data
-  region_abs <- "LU_data/Changes_test/" %>%
-    paste0(type) %>%
-    Rahat::milkunize("m5") %>%
-    list.dirs(recursive = TRUE, full.names = TRUE) %>%
-    stringr::str_subset(paste0(region, "$")) %>%
-    list.files(pattern = category, full.names = TRUE) %>%
-    str_subset("Absences") %>%
-    read.csv() %>%
-    dplyr::transmute(x = x,
-                     y = y,
-                     PA = rep(0, nrow(.)))
-
-  # Load data for model evaluation ####
-  region_PAs <- bind_rows(region_pres, region_abs)
-  # Convert to sf
-  region_PAs_sf <- sf::st_as_sf(region_PAs, coords = c("x", "y"), crs = 4326)
-  # Extract values from raster ####
-  # Convert sf to sp
-  region_PAs_sp <- as(region_PAs_sf, "Spatial")
-
-  return(region_PAs_sp)
-}
+# load_PA2 <- function(region, category, type)
+# {
+#   # Presence data
+#   region_pres <- "LU_data/Changes_four_categ/" %>%
+#     paste0(type) %>%
+#     Rahat::milkunize("m5") %>%
+#     list.dirs(recursive = TRUE, full.names = TRUE) %>%
+#     stringr::str_subset(paste0(region, "$")) %>%
+#     list.files(pattern = category, full.names = TRUE) %>%
+#     str_subset("Presences") %>%
+#     read.csv() %>%
+#     dplyr::transmute(x = X,
+#                      y = Y,
+#                      PA = rep(1, nrow(.)))
+#
+#   # Absence data
+#   region_abs <- "LU_data/Changes_test/" %>%
+#     paste0(type) %>%
+#     Rahat::milkunize("m5") %>%
+#     list.dirs(recursive = TRUE, full.names = TRUE) %>%
+#     stringr::str_subset(paste0(region, "$")) %>%
+#     list.files(pattern = category, full.names = TRUE) %>%
+#     str_subset("Absences") %>%
+#     read.csv() %>%
+#     dplyr::transmute(x = x,
+#                      y = y,
+#                      PA = rep(0, nrow(.)))
+#
+#   # Load data for model evaluation ####
+#   region_PAs <- bind_rows(region_pres, region_abs)
+#   # Convert to sf
+#   region_PAs_sf <- sf::st_as_sf(region_PAs, coords = c("x", "y"), crs = 4326)
+#   # Extract values from raster ####
+#   # Convert sf to sp
+#   region_PAs_sp <- as(region_PAs_sf, "Spatial")
+#
+#   return(region_PAs_sp)
+# }
