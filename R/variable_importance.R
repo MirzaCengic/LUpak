@@ -29,7 +29,7 @@
 #' @importFrom tibble rownames_to_column
 #' @import dplyr
 
-variable_importance <- function(data, model, iterations_num = 1,
+variable_importance2 <- function(data, model, iterations_num = 1,
                                 clean = FALSE)
 {
   # Pass here the model and the data. Here we want to check if
@@ -73,7 +73,8 @@ variable_importance <- function(data, model, iterations_num = 1,
   if (clean)
   {
     # Get names of variables that were used for the model
-    var_names <- row.names(my_model$R)[-1]
+    var_names <- names(model$model)
+    var_names <- var_names[!var_names %in% c("PA", "(weights)")]
 
     output_matrix <- output_matrix %>%
       as.data.frame() %>%
