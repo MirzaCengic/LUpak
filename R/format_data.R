@@ -66,7 +66,7 @@ format_data <- function(explanatory_variables, response_variable, evaluation_dat
 
   if (cross_validate)
   {
-    print("CV")
+    message("Formatting data for cross-validated model.")
 
     region_data_partition <- caret::createDataPartition(region_data_formatted$PA, p = 0.66, list = FALSE)
 
@@ -81,7 +81,7 @@ format_data <- function(explanatory_variables, response_variable, evaluation_dat
 
   } else {
 
-    print("hindcast")
+    message("Formatting data for hind-casted model.")
     region_values_evaluation_raw <- raster::extract(explanatory_variables_eval, evaluation_data, sp = TRUE)
     region_evaluation_values <- region_values_evaluation_raw@data
 
