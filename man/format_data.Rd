@@ -5,7 +5,8 @@
 \title{Format data}
 \usage{
 format_data(explanatory_variables, response_variable, evaluation_data,
-  VIF_select = FALSE, cross_validate = FALSE, threshold = 10)
+  explanatory_variables_eval, VIF_select = FALSE, cross_validate = FALSE,
+  threshold = 10)
 }
 \arguments{
 \item{explanatory_variables}{Raster data, output from get_rasters()}
@@ -13,6 +14,8 @@ format_data(explanatory_variables, response_variable, evaluation_data,
 \item{response_variable}{Data for fitting, output from load_PA()}
 
 \item{evaluation_data}{Data for evaluation, output from load_PA(). Necessary if cross_validate = FALSE}
+
+\item{explanatory_variables_eval}{Raster stack of explanatory variables used for hind casting. Necessary only if cross_validate = FALSE.}
 
 \item{VIF_select}{Do VIF selection of predictiors (only works now for cross_validate = TRUE). Not necessary, since VIF selection is now done a priori.}
 
