@@ -29,7 +29,7 @@
 #' @importFrom tibble rownames_to_column
 #' @import dplyr
 
-variable_importance2 <- function(data, model, iterations_num = 1,
+variable_importance <- function(data, model, iterations_num = 1,
                                 clean = FALSE)
 {
   # Pass here the model and the data. Here we want to check if
