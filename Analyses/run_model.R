@@ -12,9 +12,9 @@
 pacman::p_load(raster, sp, sf, caret, Rahat,
                tidyr, tictoc, PresenceAbsence, tidyverse, LUpak, fs)
 
-
-region_name <- "Korea_region"
-category_no <- "10"
+#
+# region_name <- "Korea_region"
+# category_no <- "10"
 
 # Set in which folder is the input data
 path_backup <- "LU_data/Changes_v666/"
@@ -31,7 +31,7 @@ path_backup <- "LU_data/Changes_v666/"
 # {
 model_id <- tolower(str_c(region_name, "_", category_no))
 ## Set processing folder and folder for evaluation output for each region
-base_dir_path <- milkunize("Land_use_output_new/", "m5")
+base_dir_path <- milkunize("Land_use_output/", "m5")
 
 proc_folder <- str_c(base_dir_path, region_name)
 eval_folder <- str_c(proc_folder, "/Eval")
@@ -58,6 +58,15 @@ if (file.exists(raster_outname))
   # Load data for model fitting ####
   # Load raster data
   raster_data <- get_rasters(region = region_name)
+
+  if (Sys.info()["sysname"][[1]] != "Windows")
+  {
+    temp_dir <- "/scratch/R_lu_tmpdir"
+    dir_create(temp_dir)
+    rasterOptions(tmpdir = temp_dir)
+
+  }
+
   # Force raster processing to byblock by lowering the maxmemory parameter
   rasterOptions(maxmemory = ncell(raster_data) - 1)
 
