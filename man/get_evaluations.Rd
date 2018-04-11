@@ -4,7 +4,7 @@
 \alias{get_evaluations}
 \title{Get model evaluations}
 \usage{
-get_evaluations(fitted_model, data, ID, output_folder)
+get_evaluations(fitted_model, data, ID)
 }
 \arguments{
 \item{fitted_model}{- glm model. Output of fit_model() function (or glm() function in that matter). Any model of class "glm".}
@@ -12,14 +12,13 @@ get_evaluations(fitted_model, data, ID, output_folder)
 \item{data}{- data for modeling. Output of format_data() function. List with "evaluation_data" slot.}
 
 \item{ID}{- model_id for the current model. Stored in a variable. Region + category}
-
-\item{output_folder}{- Folder to which the evaluations will be stored.}
 }
 \value{
-Nothing. Output is saved to disk.
+List with two dataframes.
 }
 \description{
-This function wraps around \code{evaluate_model()} and stores the output to disk.
+This function wraps around \code{evaluate_model()} and returns a list that
+contains \code{model_evaluation} and \code{model_coefficients} dataframes.
 }
 \examples{
 None.

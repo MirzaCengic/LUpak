@@ -5,7 +5,7 @@
 ##%######################################################%##
 
 # Function to calculate model evaluation metrics from fitted land use conversion models
-# Mirza Cengic | 09-02-18 | mirzaceng@gmail.com
+# Mirza Cengic | mirzaceng@gmail.com
 
 #' Evaluate model
 #' Get evaluation metrics (currently AUC and TSS) for agricultural conversion models.
@@ -74,26 +74,25 @@ evaluate_model <- function(fitted_model, data)
 
 #' Get model evaluations
 #'
-#' This function wraps around \code{evaluate_model()} and stores the output to disk.
+#' This function wraps around \code{evaluate_model()} and returns a list that
+#' contains \code{model_evaluation} and \code{model_coefficients} dataframes.
 #'
 #' @param fitted_model - glm model. Output of fit_model() function (or glm() function in that matter). Any model of class "glm".
 #' @param data - data for modeling. Output of format_data() function. List with "evaluation_data" slot.
 #' @param ID - model_id for the current model. Stored in a variable. Region + category
-#' @param output_folder - Folder to which the evaluations will be stored.
 #'
-#' @return Nothing. Output is saved to disk.
+#' @return List with two dataframes.
 #' @export
 #'
 #' @examples None.
 #'
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr transmute mutate
-#' @importFrom readr write_csv
 #' @importFrom broom tidy
-get_evaluations <- function(fitted_model, data, ID, output_folder)
+get_evaluations <- function(fitted_model, data, ID)
 {
 
-  fitted_model %>%
+  model_eval <- fitted_model %>%
     evaluate_model(data) %>%
     t() %>%
     as.data.frame() %>%
@@ -101,13 +100,17 @@ get_evaluations <- function(fitted_model, data, ID, output_folder)
     dplyr::transmute(
       Var = rowname,
       Value = V1,
-      Model_ID = ID) %>%
-    readr::write_csv(str_c(output_folder, "/Modelout_eval_", ID, ".csv"))
+      Model_ID = ID)
 
   # Get model coefficients
-  fitted_model %>%
+  model_coeff <- fitted_model %>%
     broom::tidy() %>%
-    dplyr::mutate(Model_ID = ID) %>%
-    readr::write_csv(str_c(output_folder, "/Modelout_coefficients_", ID, ".csv"))
-}
+    dplyr::mutate(Model_ID = ID)
+
+  model_assessm <- list()
+  model_assessm[["model_evaluation"]] <- model_eval
+  model_assessm[["model_coefficients"]] <- model_coeff
+
+  return(model_assessm)
+  }
 
