@@ -4,10 +4,6 @@
 #                                                          #
 ##%######################################################%##
 
-# This is a development version of the var_importance function
-# 03.04.18 | Mirza Cengic | mirzaceng@gmail.com
-
-
 #' Variable importance
 #'
 #' Calculate contribution of predictor variables to the model.
@@ -24,6 +20,7 @@
 #' @return Output is a matrix where rows have variable importance value for each variable, and the columns are individual iterations. If clean = TRUE, return class is dataframe.
 #' @export
 #'
+#' @author Mirza Cengic
 #' @examples var_importance(data = mydat, model = my_model, iterations_num = 10)
 #' @importFrom magrittr "%>%"
 #' @importFrom tibble rownames_to_column
@@ -87,16 +84,3 @@ variable_importance <- function(data, model, iterations_num = 1,
       return(output_matrix)
   }
 }
-
-
-
-# Example
-
-# Y:/ is milkun1
-# load("Y:/korea_img.RData")
-
-# my_model
-# mydat <- modeling_data[[2]]
-
-# varimp <- var_importance(data = mydat, model = my_model, iterations_num = 10)
-# varimp

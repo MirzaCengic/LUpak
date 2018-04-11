@@ -2,26 +2,26 @@
 % Please edit documentation in R/format_data.R
 \name{format_data}
 \alias{format_data}
-\title{Format data}
+\title{Format data for modeling}
 \usage{
 format_data(explanatory_variables, response_variable, evaluation_data,
   explanatory_variables_eval, VIF_select = FALSE, cross_validate = FALSE,
   threshold = 10)
 }
 \arguments{
-\item{explanatory_variables}{Raster data, output from get_rasters()}
+\item{explanatory_variables}{Raster data, output from \code{get_rasters()}.}
 
-\item{response_variable}{Data for fitting, output from load_PA()}
+\item{response_variable}{Data for fitting, output from \code{load_PA()}.}
 
-\item{evaluation_data}{Data for evaluation, output from load_PA(). Necessary if cross_validate = FALSE}
+\item{evaluation_data}{Data for evaluation, output from \code{load_PA()}. Necessary if \code{cross_validate = FALSE}.}
 
-\item{explanatory_variables_eval}{Raster stack of explanatory variables used for hind casting. Necessary only if cross_validate = FALSE.}
+\item{explanatory_variables_eval}{Raster stack of explanatory variables used for hind casting. Necessary only if \code{cross_validate = FALSE}.}
 
-\item{VIF_select}{Do VIF selection of predictiors (only works now for cross_validate = TRUE). Not necessary, since VIF selection is now done a priori.}
+\item{VIF_select}{Do VIF selection of predictiors (only works now for \code{cross_validate = TRUE}). Not necessary, since VIF selection is now done a priori.}
 
 \item{cross_validate}{Assess models on cross validated or hind casted dataset. Default is FALSE.}
 
-\item{threshold}{Thershold for VIF calculation. Not needed anymore (see VIF_select arg).}
+\item{threshold}{Thershold for VIF calculation. Not needed anymore (see \code{VIF_select} arg).}
 }
 \value{
 List of 2. Training data and evaluation data.

@@ -22,14 +22,14 @@ library(Rahat)")
   line3 <- paste0("category_no <- ", paste0('"', category, '"'))
 
   # Set path of script to be sourced
-  line4 <- 'script_to_source <- milkunize("Projects/Projects/Other/Personal_R_package/LUpak/Analyses/run_model.R")'
+  line4 <- 'script_to_source <- milkunize("Projects/Other/Personal_R_package/LUpak/Analyses/run_model.R")'
   line5 <- 'source(script_to_source)'
 
   script_name <- paste0(path, "/", tolower(region), "_", category, ".R")
 
 
   # Create script containing the above lines
-  fileConn<-file(script_name)
+  fileConn<-file(script_name, "wb")
   writeLines(c(line1, line2, line3, line4, line5), fileConn)
   close(fileConn)
 }

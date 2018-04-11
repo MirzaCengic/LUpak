@@ -28,3 +28,6 @@ Given importance value is \code{1 - correlation ** 2} for each variable. Number 
 \examples{
 var_importance(data = mydat, model = my_model, iterations_num = 10)
 }
+\author{
+Mirza Cengic
+}
