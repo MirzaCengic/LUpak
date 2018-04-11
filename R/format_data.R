@@ -1,22 +1,14 @@
-# Function for preparing data for modeling
-
-# Explanatory_variables - raster data, output from get_rasters()
-# Response_variable - data for fitting, output from load_PA()
-# Evaluation data - data for evaluation, output from load_PA(). Necessary if cross_validate = FALSE
-# VIF_select - do VIF selection of predictiors (only works now for cross_validate = TRUE)
-# cross_validate - assess models on cross validated or hind casted dataset
-
-#' Format data
+#' Format data for modeling
 #'
 #' Prepares data for modeling. Gives list with training and evaluation data needed for the model.
 #'
-#' @param explanatory_variables Raster data, output from get_rasters()
-#' @param response_variable Data for fitting, output from load_PA()
-#' @param evaluation_data Data for evaluation, output from load_PA(). Necessary if cross_validate = FALSE
-#' @param VIF_select Do VIF selection of predictiors (only works now for cross_validate = TRUE). Not necessary, since VIF selection is now done a priori.
+#' @param explanatory_variables Raster data, output from \code{get_rasters()}.
+#' @param response_variable Data for fitting, output from \code{load_PA()}.
+#' @param evaluation_data Data for evaluation, output from \code{load_PA()}. Necessary if \code{cross_validate = FALSE}.
+#' @param VIF_select Do VIF selection of predictiors (only works now for \code{cross_validate = TRUE}). Not necessary, since VIF selection is now done a priori.
 #' @param cross_validate Assess models on cross validated or hind casted dataset. Default is FALSE.
-#' @param threshold Thershold for VIF calculation. Not needed anymore (see VIF_select arg).
-#' @param explanatory_variables_eval Raster stack of explanatory variables used for hind casting. Necessary only if cross_validate = FALSE.
+#' @param threshold Thershold for VIF calculation. Not needed anymore (see \code{VIF_select} arg).
+#' @param explanatory_variables_eval Raster stack of explanatory variables used for hind casting. Necessary only if \code{cross_validate = FALSE}.
 #'
 #' @return List of 2. Training data and evaluation data.
 #' @export
