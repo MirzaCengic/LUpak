@@ -10,11 +10,11 @@
 
 
 pacman::p_load(raster, sp, sf, caret, Rahat,
-               tidyr, tictoc, PresenceAbsence, tidyverse, LUpak)
+               tidyr, tictoc, PresenceAbsence, tidyverse, LUpak, fs)
 
 
-# region_name <- "Korea_region"
-# category_no <- "10"
+region_name <- "Korea_region"
+category_no <- "10"
 
 # Set in which folder is the input data
 path_backup <- "LU_data/Changes_v666/"
@@ -83,14 +83,30 @@ if (file.exists(raster_outname))
   # Fit model with stepwise AIC selection
   my_model <- fit_model(modeling_data)
 
-  # Get evaluations for the model (coefficients and assessment) and write them to disk
-  # evaluate_model(my_model, modeling_data)
-  get_evaluations(fitted_model = my_model, data = modeling_data, ID = model_id, output_folder = eval_folder)
+  # Write model outputs -----------------------------------------------------
+  # Calculate variable importances
+  var_imp_raw <- variable_importance(data = modeling_data$evaluation_data, model = my_model,
+                                          clean = TRUE)
+  var_imp <- var_imp_raw %>%
+    transmute(
+      Variable,
+      Importance = Iter_1,
+      Importance_scaled_100 = (Iter_1 / sum(Iter_1)) * 100,
+      Model_ID = model_id)
 
-  # Variable importance calculation should be still implemented.
-  # Check what the data argument should be. Now I use modeling_data, which is extracted data from the response variable, not the full set
-  # Maybe a fix should be added so a raster stack is accepted instead.!
-  variable_importance(data = modeling_data$training_data, model = my_model, clean = TRUE)
+  # Calculate model assessment
+    # evaluate_model(my_model, modeling_data)
+  model_assessment <- get_evaluations(fitted_model = my_model, data = modeling_data, ID = model_id)
+
+  # Set file paths
+  variable_imp_filename <- paste0(eval_folder, "/Variable_importance_", model_id, ".csv")
+  model_assessmet_filename <- paste0(eval_folder, "/Model_assessment_", model_id, ".csv")
+  model_coeffs_filename <- paste0(eval_folder, "/Model_coefficients_", model_id, ".csv")
+  # Save
+  write.csv(var_imp, variable_imp_filename, row.names = FALSE)
+  write.csv(model_assessment$model_evaluation, model_assessmet_filename, row.names = FALSE)
+  write.csv(model_assessment$model_coefficients, model_coeffs_filename, row.names = FALSE)
+
 
   # Harmonize layer names
   names(raster_data_fit) <- str_replace(names(raster_data_fit), "_fit_catg", "_catg")
@@ -113,13 +129,28 @@ if (file.exists(raster_outname))
   # Fit model with stepwise AIC selection
   my_model_cv <- fit_model(modeling_data_cv)
 
-  # Get evaluations for the model (coefficients and assessment) and write them to disk...
-  # evaluate_model(my_model_cv, modeling_data_cv)
-  get_evaluations(fitted_model = my_model_cv, data = modeling_data_cv, ID = paste0(model_id, "_cv"), output_folder = eval_folder)
+  # Write model outputs (cross validated model) -----------------------------------------------------
+  # Calculate variable importances
+  var_imp_cv_raw <- variable_importance(data = modeling_data_cv$evaluation_data, model = my_model_cv,
+                                          clean = TRUE)
+  var_imp_cv <- var_imp_cv_raw %>%
+    transmute(
+      Variable,
+      Importance = Iter_1,
+      Importance_scaled_100 = (Iter_1 / sum(Iter_1)) * 100,
+      Model_ID = paste0(model_id, "_cv"))
 
-  # Save image
+  # Calculate model assessment
+  # evaluate_model(my_model, modeling_data)
+  model_assessment_cv <- get_evaluations(fitted_model = my_model_cv, data = modeling_data_cv, ID = paste0(model_id, "_cv"))
 
-  # image_path <- paste0(proc_folder, "/", model_id, ".RData")
-  # cat("Saving data", "\n")
-  # save.image(image_path)
+  # Set file paths
+  variable_imp_cv_filename <- paste0(eval_folder, "/Variable_importance_", paste0(model_id, "_cv"), ".csv")
+  model_assessmet_cv_filename <- paste0(eval_folder, "/Model_assessment_", paste0(model_id, "_cv"), ".csv")
+  model_coeffs_cv_filename <- paste0(eval_folder, "/Model_coefficients_", paste0(model_id, "_cv"), ".csv")
+  # Save
+  write.csv(var_imp_cv, variable_imp_cv_filename, row.names = FALSE)
+  write.csv(model_assessment_cv$model_evaluation, model_assessmet_cv_filename, row.names = FALSE)
+  write.csv(model_assessment_cv$model_coefficients, model_coeffs_cv_filename, row.names = FALSE)
+
 }
