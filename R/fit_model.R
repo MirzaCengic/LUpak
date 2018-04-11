@@ -1,7 +1,3 @@
-# Function to fit land use conversion model
-
-# data - modeling data. Output of format_data() function.
-
 #' Fit model
 #'
 #' Fits model for agricultural conversion with implemented weighing scheme.
@@ -17,7 +13,6 @@ fit_model <- function(data, aic_step = TRUE)
 {
   model_fitting_data <- data[["training_data"]]
   # Fit model
-  # warning("Fitting model... PA weighting still needs to be implemented!")
 
   # Set presence absence weight - equal weighting scheme
   P_proportion <- round(sum(model_fitting_data$PA == 1) / length(model_fitting_data$PA) * 10)
@@ -33,26 +28,5 @@ fit_model <- function(data, aic_step = TRUE)
     return(glm_model)
   } else {
     return(glm_model)
-
   }
-
 }
-
-
-# model_fitting_data <- data[["training_data"]]
-
-
-# table(model_fitting_data$PA)[1] / length(model_fitting_data$PA)
-
-# length(which(model_fitting_data$PA == 1))
-
-# length(which(model_fitting_data$PA == 0))
-
-
-# biomod_options <- BIOMOD_ModelingOptions(GLM = list(type = "simple",
-#                                                     interaction.level = 0,
-#                                                     myFormula = NULL,
-#                                                     test = "AIC",
-#                                                     family = binomial(link = "logit"),
-#                                                     mustart = 0.5,
-#                                                     control = glm.control(epsilon = 1e-08, maxit = 50, trace = FALSE)))
