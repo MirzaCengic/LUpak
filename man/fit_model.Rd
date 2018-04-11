@@ -15,7 +15,8 @@ fit_model(data, aic_step = TRUE)
 Model of "glm" class.
 }
 \description{
-Fits model for agricultural conversion...
+Fits model for agricultural conversion with implemented weighing scheme.
+#'
 }
 \examples{
 None.

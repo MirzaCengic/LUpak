@@ -4,8 +4,8 @@
 
 #' Fit model
 #'
-#' Fits model for agricultural conversion...
-#'
+#' Fits model for agricultural conversion with implemented weighing scheme.
+#' #'
 #' @param data Data for modeling. Output of \code{format_data()} function.
 #' @param aic_step Perform aic stepwise model selection. Default is \code{TRUE}.
 #'
@@ -17,11 +17,11 @@ fit_model <- function(data, aic_step = TRUE)
 {
   model_fitting_data <- data[["training_data"]]
   # Fit model
-  warning("Fitting model... PA weighting still needs to be implemented!")
+  # warning("Fitting model... PA weighting still needs to be implemented!")
 
   # Set presence absence weight - equal weighting scheme
-  P_proportion <- sum(model_fitting_data$PA == 1) / length(model_fitting_data$PA)
-  A_proportion <- sum(model_fitting_data$PA == 0) / length(model_fitting_data$PA)
+  P_proportion <- round(sum(model_fitting_data$PA == 1) / length(model_fitting_data$PA) * 10)
+  A_proportion <- round(sum(model_fitting_data$PA == 0) / length(model_fitting_data$PA) * 10)
   weights <- ifelse(model_fitting_data$PA == 1, P_proportion, A_proportion)
   #
   glm_model <- glm(PA ~ . , data = model_fitting_data, family = binomial,
