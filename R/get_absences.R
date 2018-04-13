@@ -100,7 +100,7 @@ rcl_na <- function(x, filename)
 #' @examples None.
 #' @importFrom fs file_temp file_delete
 #' @importFrom raster sampleRandom
-get_absences <- function(raster_old, raster_new, category, abs_number = 10000,
+get_absences <- function(raster_old, raster_new, category, abs_number,
                          exclude_urban = FALSE, sp = FALSE)
 {
 
@@ -155,7 +155,7 @@ get_absences <- function(raster_old, raster_new, category, abs_number = 10000,
     absences <- raster::sampleRandom(both, abs_number, na.rm = TRUE, sp = TRUE)
     names(absences) <- "PA"
   } else {
-    absences <- raster::sampleRandom(both, 10000, na.rm = TRUE, xy = TRUE)
+    absences <- raster::sampleRandom(both, abs_number, na.rm = TRUE, xy = TRUE)
     absences <- absences[, c("x", "y")]
   }
 
