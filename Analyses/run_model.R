@@ -17,7 +17,7 @@ pacman::p_load(raster, sp, sf, caret, Rahat,
 # category_no <- "10"
 
 # Set in which folder is the input data
-path_backup <- "LU_data/Changes_v666/"
+path_backup <- "LU_data/Agri_changes/"
 
 
 # Main function with error catching  --------------------------------------
@@ -89,8 +89,8 @@ if (file.exists(raster_outname))
   modeling_data <- format_data(explanatory_variables = raster_data_fit, response_variable = PA_data, evaluation_data = PA_data_eval,
                                VIF_select = FALSE, cross_validate = FALSE, explanatory_variables_eval = raster_data_eval)
 
-  # Fit model with stepwise AIC selection
-  my_model <- fit_model(modeling_data)
+  # Fit model with stepwise AIC selection, without presence/absence weighting
+  my_model <- fit_model(modeling_data, weights = FALSE)
 
   # Write model outputs -----------------------------------------------------
   # Calculate variable importances
@@ -124,9 +124,8 @@ if (file.exists(raster_outname))
   cat("Predicting...", "\n")
   predicted_model <- raster::predict(raster_data_fit, my_model, na.rm = TRUE, type = "response", progress = "text")
 
-  predicted_model <- predicted_model * 1000
-  cat("Saving raster", "\n")
-  writeRaster(predicted_model, raster_outname, dataType = "INT2U", options = "COMPRESS=LZW", overwrite = TRUE)
+    cat("Saving raster", "\n")
+  writeRaster(predicted_model, raster_outname, options = "COMPRESS=LZW", overwrite = TRUE)
 
   ###############################
   #### Cross-validated model ####
