@@ -4,12 +4,14 @@
 \alias{fit_model}
 \title{Fit model}
 \usage{
-fit_model(data, aic_step = TRUE)
+fit_model(data, aic_step = TRUE, weights = FALSE)
 }
 \arguments{
 \item{data}{Data for modeling. Output of \code{format_data()} function.}
 
 \item{aic_step}{Perform aic stepwise model selection. Default is \code{TRUE}.}
+
+\item{weights}{Should the weighting scheme be implemented? Default is \code{FALSE}.}
 }
 \value{
 Model of "glm" class.
