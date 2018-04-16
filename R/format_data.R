@@ -46,10 +46,10 @@ format_data <- function(explanatory_variables, response_variable, evaluation_dat
     stringr::str_detect("catg") %>%
     which()
 
-  region_data_formatted[[categorical_rasters_index[1]]] <- as.factor(region_data_formatted[[categorical_rasters_index[1]]])
-  region_data_formatted[[categorical_rasters_index[2]]] <- as.factor(region_data_formatted[[categorical_rasters_index[2]]])
-
-
+  for (i in 1:length(categorical_rasters_index))
+  {
+    region_data_formatted[[categorical_rasters_index[i]]] <- as.factor(region_data_formatted[[categorical_rasters_index[i]]])
+  }
   # Prepare data for modeling ####
   # Create data partition - in this case cross validated dataset (66% of the data goes to model training)
 
@@ -87,8 +87,10 @@ format_data <- function(explanatory_variables, response_variable, evaluation_dat
       str_detect("catg") %>%
       which()
 
-    region_data_evaluation_formatted[[categorical_rasters_index[1]]] <- as.factor(region_data_evaluation_formatted[[categorical_rasters_index[1]]])
-    region_data_evaluation_formatted[[categorical_rasters_index[2]]] <- as.factor(region_data_evaluation_formatted[[categorical_rasters_index[2]]])
+    for (i in 1:length(categorical_rasters_index))
+    {
+      region_data_evaluation_formatted[[categorical_rasters_index[i]]] <- as.factor(region_data_evaluation_formatted[[categorical_rasters_index[i]]])
+    }
 
   }
   # Put hind casting data into empty list
