@@ -27,7 +27,6 @@ load_PA <- function(region, category, type, path)
   # Get path for change data - str_subset controls the region, list.files the category
   region_files <- path %>%
     paste0(type) %>%
-    Rahat::milkunize("m5") %>%
     list.dirs(recursive = TRUE, full.names = TRUE) %>%
     stringr::str_subset(paste0(region, "$")) %>%
     list.files(pattern = category, full.names = TRUE)
