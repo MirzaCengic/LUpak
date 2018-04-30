@@ -4,7 +4,7 @@
 \alias{get_absences}
 \title{Get absences}
 \usage{
-get_absences(raster_old, raster_new, category, abs_number = 10000,
+get_absences(raster_old, raster_new, category, abs_number,
   exclude_urban = FALSE, sp = FALSE)
 }
 \arguments{

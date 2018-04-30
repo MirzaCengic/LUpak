@@ -105,17 +105,18 @@ get_absences <- function(raster_old, raster_new, category, abs_number,
 {
 
   # Category 10, 11, 12 or 666 (use 10, 11, 12 for separate modeling, 666 just have when all rainfed categories are used)
-  if(category == 10)
-  {
-    values_excluded <- 10:20
-  } else if(category == 30)
-  {
-    values_excluded <- 30
-  } else if(category == 40)
-  {
-    values_excluded <- 40
-  } else {stop("Enter correct crop category to model")}
+  # if(category == 10)
+  # {
+  #   values_excluded <- 10:20
+  # } else if(category == 30)
+  # {
+  #   values_excluded <- 30
+  # } else if(category == 40)
+  # {
+  #   values_excluded <- 40
+  # } else {stop("Enter correct crop category to model")}
   # Values for all of the possible categories
+  values_excluded <- 10:40
   all_categories <- 1:221
 
   # Add fork for cases when the urban areas should be excluded from the absence creation
