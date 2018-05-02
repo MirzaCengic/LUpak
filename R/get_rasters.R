@@ -15,7 +15,7 @@
 #'
 #' @examples get_rasters("Korea_region")
 
-get_rasters2 <- function(region)
+get_rasters <- function(region)
 {
 
   region_rasters <- "Projects/Land_use/Data/Predictors/Normalized_IMAGE_regions/" %>%
