@@ -15,12 +15,12 @@
 #'
 #' @examples get_rasters("Korea_region")
 
-get_rasters <- function(region)
+get_rasters2 <- function(region)
 {
 
   region_rasters <- "Projects/Land_use/Data/Predictors/Normalized_IMAGE_regions/" %>%
     paste0(region) %>%
-    Rahat::milkunize() %>%
+    Rahat::milkunize2("archive") %>%
     list.files(pattern = ".tif$", full.names = TRUE) %>%
     raster::stack()
 
