@@ -4,7 +4,7 @@
 \alias{get_absences}
 \title{Get absences}
 \usage{
-get_absences(raster_old, raster_new, category, abs_number,
+get_absences(raster_old, raster_new, category, abs_number, multiplyr = 3,
   exclude_urban = FALSE, sp = FALSE)
 }
 \arguments{
@@ -15,6 +15,8 @@ get_absences(raster_old, raster_new, category, abs_number,
 \item{category}{Modeled land cover category. Currently only agriculture is supported. Numeric. One of c(10, 30, 40).}
 
 \item{abs_number}{Number of absences to create. Default is 10 000.}
+
+\item{multiplyr}{Multiplier for absences number.}
 
 \item{exclude_urban}{Should the urban areas be excluded from the absences calculation. If \code{exclude_urban = TRUE},
 absences will not be created in urban areas (class 190) in addition to modeled category. Default is FALSE.}

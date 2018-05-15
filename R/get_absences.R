@@ -86,6 +86,7 @@ rcl_na <- function(x, filename)
 #' Get absences
 #'
 #' Take land cover rasters from two timesteps (old and new).
+#'
 #' @param raster_old Raster from the previous timestep.
 #' @param raster_new Raster from the future timestep.
 #' @param category Modeled land cover category. Currently only agriculture is supported. Numeric. One of c(10, 30, 40).
@@ -93,6 +94,7 @@ rcl_na <- function(x, filename)
 #' @param exclude_urban Should the urban areas be excluded from the absences calculation. If \code{exclude_urban = TRUE},
 #' absences will not be created in urban areas (class 190) in addition to modeled category. Default is FALSE.
 #' @param sp Logical. If \code{sp = TRUE}, spatial object of class sp will be returned. Otherwise a dataframe (default).
+#' @param multiplyr Multiplier for absences number.
 #'
 #' @return Dataframe or sp object (depending on the \code{sp} argument).
 #' @export
@@ -101,7 +103,7 @@ rcl_na <- function(x, filename)
 #' @importFrom fs file_temp file_delete
 #' @importFrom raster sampleRandom
 #' @importFrom dplyr sample_n
-get_absences <- function(raster_old, raster_new, category, abs_number,
+get_absences <- function(raster_old, raster_new, category, abs_number, multiplyr = 3,
                          exclude_urban = FALSE, sp = FALSE)
 {
 
@@ -157,7 +159,7 @@ get_absences <- function(raster_old, raster_new, category, abs_number,
     absences <- raster::sampleRandom(both, abs_number, na.rm = TRUE, sp = TRUE)
     names(absences) <- "PA"
   } else {
-    absences <- raster::sampleRandom(both, abs_number * 2, na.rm = TRUE, xy = TRUE, df = TRUE)
+    absences <- raster::sampleRandom(both, abs_number * multiplyr, na.rm = TRUE, xy = TRUE, df = TRUE)
     absences <- absences[, c("x", "y")]
 
     absences <- sample_n(as.data.frame(absences), abs_number)
