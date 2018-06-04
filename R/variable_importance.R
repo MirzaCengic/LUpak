@@ -63,7 +63,7 @@ variable_importance <- function(data, model, iterations_num = 1,
       output_matrix[var_name, iter] <- 1 - round(cor(x = reference_prediction,
                                                      y = randomized_prediction,
                                                      use = "pairwise.complete.obs",
-                                                     method = "spearman") ** 2, 4)
+                                                     method = "pearson"), 4)
     }
   }
 
