@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples None.
-#' @importFrom dplyr transmute select
+#' @importFrom dplyr transmute select pull
 #' @importFrom PresenceAbsence optimal.thresholds
 #' @importFrom tidyr drop_na spread
 #' @importFrom dismo evaluate
@@ -56,8 +56,14 @@ evaluate_model <- function(fitted_model, data)
   best_thres <- PresenceAbsence::optimal.thresholds(model_obs_pred, opt.methods = 3)$Predicted
 
   # Get vector of predicted values at presence and absence locations
-  presence_values <- predicted %>% dplyr::select(P) %>% tidyr::drop_na()
-  absence_values <- predicted %>% dplyr::select(A) %>% tidyr::drop_na()
+  presence_values <- predicted %>%
+    dplyr::select(P) %>%
+    tidyr::drop_na() %>%
+    dplyr::pull()
+  absence_values <- predicted %>%
+    dplyr::select(A) %>%
+    tidyr::drop_na() %>%
+    dplyr::pull()
 
   model_evaluation <- dismo::evaluate(p = presence_values, a = absence_values, model = fitted_model, tr = best_thres)
 
