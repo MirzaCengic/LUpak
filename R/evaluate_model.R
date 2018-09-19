@@ -120,3 +120,51 @@ get_evaluations <- function(fitted_model, data, ID)
   return(model_assessm)
   }
 
+#### Function to clean up model coefficient output
+#### Get names of all rasters
+
+#' Clean up model coefficients output
+#'
+#' @param r_data Raw raster data
+#' @param v_rasters VIF raster values
+#' @param model Model object.
+#' @param m_assessment Model assessment object
+#'
+#' @return dataframe
+#' @export
+#'
+#' @examples
+#' clean_coeffs(model = my_model, r_data = raster_data_raw, v_rasters = vif_rasters, m_assessment = model_assessment)
+#' @importFrom broom tidy
+clean_coeffs <- function(model, r_data, v_rasters, m_assessment)
+{
+  # v_rasters$Var %notin%  names(r_data)
+  vif_eliminated <- names(r_data)[!names(r_data) %in% v_rasters$Var]
+  vif_eliminated <- vif_eliminated[vif_eliminated != "Protected_areas_catg"]
+
+  all_vars <- c(v_rasters$Var, "Protected_areas_catg")
+
+  aic_vars <- model %>%
+    broom::tidy() %>%
+    transmute(Variable = term,
+              Variable = stringr::str_replace(Variable, "catg1", "catg")) %>%
+    dplyr::filter(Variable != "(Intercept)") %>%
+    dplyr::pull()
+
+  aic_eliminated <- all_vars[all_vars %notin% aic_vars]
+
+  model_coefficients <- r_data %>%
+    names() %>%
+    as.data.frame(stringsAsFactors = FALSE) %>%
+    rbind("(Intercept)") %>%
+    rename(All_variables = 1) %>%
+    left_join(m_assessment$model_coefficients, by = c("All_variables" = "term")) %>%
+    mutate(Model_ID = unique(m_assessment$model_coefficient$Model_ID),
+           status = case_when(
+             All_variables %in% vif_eliminated ~ "VIF",
+             All_variables %in% aic_eliminated ~ "AIC",
+             TRUE ~ "Included"))
+
+  return(model_coefficients)
+
+}
