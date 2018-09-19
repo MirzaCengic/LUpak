@@ -10,3 +10,5 @@
 .tif
 readme.txt
 R/dev.R
+tests/*
+wc10/*
