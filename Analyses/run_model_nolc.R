@@ -33,13 +33,13 @@ cat(paste0("\n======================================\n",
            "#### Model run ", model_id, " ####\n",
            "======================================\n\n"))
 ## Set processing folder and folder for evaluation output for each region
-base_dir_path <- milkunize2("Projects/Land_use/Output/Model_runs/", "archive")
+base_dir_path <- milkunize2("Projects/Land_use/Output/Model_runs_VIF/", "archive")
 
 proc_folder <- str_c(base_dir_path, region_name)
 eval_folder <- str_c(proc_folder, "/Eval")
 
-dir.create(proc_folder, mode = "777", showWarnings = FALSE)
-dir.create(eval_folder, mode = "777", showWarnings = FALSE)
+dir.create(proc_folder, mode = "777", recursive = TRUE)
+dir.create(eval_folder, mode = "777", recursive = TRUE)
 
 raster_outname <- paste0(proc_folder, "/", model_id, ".tif")
 
@@ -61,12 +61,13 @@ if (file.exists(raster_outname))
 
   # Load data for model fitting ####
   # Load raster data
-  raster_data <- get_rasters(region = region_name)
+  raster_data_raw <- get_rasters(region = region_name)
+  raster_data <- raster_data_raw
 
   if (Sys.info()["sysname"][[1]] != "Windows")
   {
     temp_dir <- "/scratch/R_lu_tmpdir"
-    dir.create(temp_dir, mode = "777", showWarnings = FALSE)
+    dir.create(temp_dir, mode = "777", recursive = TRUE)
     rasterOptions(tmpdir = temp_dir)
   }
 
@@ -77,8 +78,8 @@ if (file.exists(raster_outname))
   # raster_to_subset_fit <- c(vif_rasters$Var, "Protected_areas_catg")
   # raster_to_subset_eval <- c(vif_rasters$Var, "Protected_areas_catg")
   #
-  # raster_data_fit <- raster::subset(raster_data, raster_to_subset_fit)
-  # raster_data_eval <- raster::subset(raster_data, raster_to_subset_eval)
+  # Subset explanatory variables to VIF ones + categorical protected areas predictor
+  raster_data <- raster::subset(raster_data, c(vif_rasters$Var, "Protected_areas_catg"))
 
   # Load presences/absences (argument "type" defines if the modeling data is for model fitting or evaluation)
   PA_data <- load_PA(region = region_name, category = category_no, type = "Fit", path = changes_path)
@@ -110,6 +111,7 @@ if (file.exists(raster_outname))
   # Calculate model assessment
   # evaluate_model(my_model, modeling_data)
   model_assessment <- get_evaluations(fitted_model = my_model, data = modeling_data, ID = model_id)
+  model_coefficients <- clean_coeffs(model = my_model, r_data = raster_data_raw, v_rasters = vif_rasters, m_assessment = model_assessment)
 
   # Set file paths
   variable_imp_filename <- paste0(eval_folder, "/Variable_importance_", model_id, ".csv")
@@ -118,7 +120,7 @@ if (file.exists(raster_outname))
   # Save
   write.csv(var_imp, variable_imp_filename, row.names = FALSE)
   write.csv(model_assessment$model_evaluation, model_assessmet_filename, row.names = FALSE)
-  write.csv(model_assessment$model_coefficients, model_coeffs_filename, row.names = FALSE)
+  write.csv(model_coefficients, model_coeffs_filename, row.names = FALSE)
 
 
   # Make categorical rasters as factor
@@ -158,6 +160,8 @@ if (file.exists(raster_outname))
   # Calculate model assessment
   # evaluate_model(my_model, modeling_data)
   model_assessment_cv <- get_evaluations(fitted_model = my_model_cv, data = modeling_data_cv, ID = paste0(model_id, "_cv"))
+  model_coefficients_cv <- clean_coeffs(model = my_model_cv, r_data = raster_data_raw, v_rasters = vif_rasters,
+                                        m_assessment = model_assessment_cv)
 
   # Set file paths
   variable_imp_cv_filename <- paste0(eval_folder, "/Variable_importance_", paste0(model_id, "_cv"), ".csv")
@@ -166,15 +170,15 @@ if (file.exists(raster_outname))
   # Save
   write.csv(var_imp_cv, variable_imp_cv_filename, row.names = FALSE)
   write.csv(model_assessment_cv$model_evaluation, model_assessmet_cv_filename, row.names = FALSE)
-  write.csv(model_assessment_cv$model_coefficients, model_coeffs_cv_filename, row.names = FALSE)
+  write.csv(model_coefficients_cv, model_coeffs_cv_filename, row.names = FALSE)
 
-  tic("Predicting...")
-  predicted_model_cv <- raster::predict(raster_data, my_model_cv, na.rm = TRUE, type = "response", progress = "text")
-  toc()
+  # tic("Predicting...")
+  # # predicted_model_cv <- raster::predict(raster_data, my_model_cv, na.rm = TRUE, type = "response", progress = "text")
+  # toc()
 
-  raster_outname_cv <- paste0(proc_folder, "/", model_id, "_cv.tif")
+  # raster_outname_cv <- paste0(proc_folder, "/", model_id, "_cv.tif")
 
   cat("Saving raster...", "\n")
-  writeRaster(predicted_model_cv, raster_outname_cv, options = "COMPRESS=LZW", overwrite = TRUE)
+  # writeRaster(predicted_model_cv, raster_outname_cv, options = "COMPRESS=LZW", overwrite = TRUE)
 
 }
