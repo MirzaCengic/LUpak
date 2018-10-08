@@ -138,6 +138,9 @@ get_evaluations <- function(fitted_model, data, ID)
 #' @importFrom broom tidy
 clean_coeffs <- function(model, r_data, v_rasters, m_assessment)
 {
+
+  model_coefficients_raw <- m_assessment$model_coefficients %>%
+    mutate(term = stringr::str_replace(term, "catg1", "catg"))
   # v_rasters$Var %notin%  names(r_data)
   vif_eliminated <- names(r_data)[!names(r_data) %in% v_rasters$Var]
   vif_eliminated <- vif_eliminated[vif_eliminated != "Protected_areas_catg"]
@@ -158,8 +161,8 @@ clean_coeffs <- function(model, r_data, v_rasters, m_assessment)
     as.data.frame(stringsAsFactors = FALSE) %>%
     rbind("(Intercept)") %>%
     rename(All_variables = 1) %>%
-    left_join(m_assessment$model_coefficients, by = c("All_variables" = "term")) %>%
-    mutate(Model_ID = unique(m_assessment$model_coefficient$Model_ID),
+    left_join(model_coefficients_raw, by = c("All_variables" = "term")) %>%
+    mutate(Model_ID = unique(model_coefficients_raw$Model_ID),
            status = case_when(
              All_variables %in% vif_eliminated ~ "VIF",
              All_variables %in% aic_eliminated ~ "AIC",
