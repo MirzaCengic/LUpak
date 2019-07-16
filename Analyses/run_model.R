@@ -17,7 +17,7 @@ pacman::p_load(raster, sp, sf, caret, Rahat,
 # category_no <- "10"
 
 # Set in which folder is the input data
-path_backup <- "LU_data/Agri_changes/"
+path_backup <- "LU_data/Changes_v666/"
 
 
 # Main function with error catching  --------------------------------------
@@ -31,7 +31,7 @@ path_backup <- "LU_data/Agri_changes/"
 # {
 model_id <- tolower(str_c(region_name, "_", category_no))
 ## Set processing folder and folder for evaluation output for each region
-base_dir_path <- milkunize("Land_use_output/", "m5")
+base_dir_path <- milkunize("Land_use_models_10k/", "m5")
 
 proc_folder <- str_c(base_dir_path, region_name)
 eval_folder <- str_c(proc_folder, "/Eval")
@@ -89,8 +89,8 @@ if (file.exists(raster_outname))
   modeling_data <- format_data(explanatory_variables = raster_data_fit, response_variable = PA_data, evaluation_data = PA_data_eval,
                                VIF_select = FALSE, cross_validate = FALSE, explanatory_variables_eval = raster_data_eval)
 
-  # Fit model with stepwise AIC selection, without presence/absence weighting
-  my_model <- fit_model(modeling_data, weights = FALSE)
+  # Fit model with stepwise AIC selection, with presence/absence weighting (for 10000 absences)
+  my_model <- fit_model(modeling_data, weights = TRUE)
 
   # Write model outputs -----------------------------------------------------
   # Calculate variable importances
